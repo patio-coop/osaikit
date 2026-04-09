@@ -1,0 +1,36 @@
+{
+  "name": "ai-model-advisor",
+  "version": "0.1.0",
+  "description": "AI model recommendation engine for developers — find the right open LLM for your stack",
+  "type": "module",
+  "bin": {
+    "ai-model-advisor": "./dist/cli.js"
+  },
+  "main": "./dist/cli.js",
+  "scripts": {
+    "build": "node build.js",
+    "start": "node dist/cli.js",
+    "dev": "node build.js && node dist/cli.js",
+    "test": "node --test src/**/*.test.js",
+    "prepublishOnly": "node build.js",
+    "prepare": "node build.js"
+  },
+  "keywords": ["ai", "llm", "model", "recommendation", "developer", "tui", "cli"],
+  "author": "",
+  "license": "MIT",
+  "files": ["dist", "src"],
+  "dependencies": {
+    "chalk": "5.6.2",
+    "cli-boxes": "4.0.1",
+    "ink": "6.8.0",
+    "ink-big-text": "2.0.0",
+    "ink-gradient": "4.0.0",
+    "ink-select-input": "6.2.0",
+    "ink-spinner": "5.0.0",
+    "ink-text-input": "6.0.0",
+    "react": "19.2.4"
+  },
+  "devDependencies": {
+    "esbuild": "0.27.4"
+  }
+}
