@@ -1,6 +1,6 @@
 # PATIO — AI Model Advisor
 
-Interactive CLI wizard that recommends the best open-source LLM for your stack, hardware, and use case.
+Interactive CLI that recommends the best open-source LLM for your stack, hardware, and use case. Point it at a repo and get model recommendations with copy-paste setup commands — no API keys required.
 
 ```
  ____   _  _____ ___ ___
@@ -10,11 +10,32 @@ Interactive CLI wizard that recommends the best open-source LLM for your stack, 
 |_| /_/   \_\_| |___\___/
 ```
 
+## Quick start
+
+```bash
+# Analyze a repo and get instant recommendations
+npx ai-model-advisor --repo .
+
+# Or run the interactive wizard
+npx ai-model-advisor
+```
+
 ## What it does
 
-Answer six quick questions about your development environment and the advisor scores 30+ open-source models across six weighted dimensions to find the best fit — no API keys required.
+Scores 32 open-source models across seven weighted dimensions to find the best fit for your project. Two modes:
 
-### Wizard steps
+### `--repo <path>` — Auto-detect mode
+
+Point at any local repo. The analyzer scans your codebase and auto-detects languages, frameworks, runtime, platform, and project size — then skips straight to recommendations.
+
+```bash
+ai-model-advisor --repo .
+ai-model-advisor --repo ~/projects/my-api
+```
+
+### Interactive wizard
+
+Answer six quick questions about your development environment:
 
 1. **Role** — web, backend, mobile, or game development
 2. **Tech stack** — languages, frameworks, runtime, platform
@@ -25,9 +46,13 @@ Answer six quick questions about your development environment and the advisor sc
 
 ### What you get
 
-- **Primary recommendation** with score breakdown
+- **Primary recommendation** with score breakdown across 7 dimensions
+- **Quick start commands** — copy-paste `ollama run`, vLLM Docker, llama.cpp, HuggingFace TGI, or LM Studio setup
+- **License guidance** — commercial use, fine-tuning rights, output ownership, training data provenance, and action items
+- **Integration snippet** — framework-specific code to wire the model into your stack (Express, FastAPI, Gin, Axum, etc.)
 - **Fallback model** from a different family
 - **On-device option** for local/offline use
+- **Enterprise readiness score** — managed hosting providers, SLA availability, SDK quality, community size
 - Tuned inference config (temperature, top-p, max tokens)
 - Starter prompt template for your use case
 - Cost and latency estimates (local vs. cloud)
@@ -59,7 +84,7 @@ npm test       # run tests
 
 ## How scoring works
 
-Models are first filtered by hard constraints (license, RAM, privacy, budget, deployment). Remaining candidates are scored across six dimensions:
+Models are first filtered by hard constraints (license, RAM, privacy, budget, deployment). Remaining candidates are scored across seven dimensions:
 
 | Dimension | Weight | What it measures |
 |-----------|--------|------------------|
@@ -68,6 +93,7 @@ Models are first filtered by hard constraints (license, RAM, privacy, budget, de
 | Benchmarks | 2.0x | HumanEval, SWE-bench, Aider polyglot scores |
 | Compute footprint | 1.5x | Latency, on-device viability, budget fit |
 | Ecosystem | 1.0x | Tooling support (Ollama, llama.cpp, vLLM, etc.) |
+| Enterprise readiness | 0.75x | Managed hosting, SLA, VPC, SDK quality, community, docs |
 | Fine-tuning | 0.5x | LoRA/adapter support, fine-tunability |
 
 Live leaderboard data from HuggingFace, SWE-bench, and Aider is fetched in parallel to enrich results — but the tool works fully offline using its built-in model database.
@@ -76,17 +102,22 @@ Live leaderboard data from HuggingFace, SWE-bench, and Aider is fetched in paral
 
 ```
 src/
-├── cli.js                 # Entry point, flag parsing, Ink render
+├── cli.js                 # Entry point, flag parsing (--repo, --help, --version)
 ├── app.js                 # State machine (welcome → wizard → loading → results)
 ├── theme.js               # Patio design system tokens
+├── analyzer/
+│   └── repo.js            # Repository scanner (languages, frameworks, runtime)
 ├── components/
 │   ├── wizard.js          # 6-step questionnaire flow
 │   ├── steps.js           # Individual step components
 │   ├── loading.js         # Loading screen with per-source status
-│   └── results.js         # Recommendation display
+│   └── results.js         # Recommendation display (12 sections)
 ├── engine/
-│   ├── models.js          # Static database of 30+ open LLMs
-│   └── rules.js           # Scoring engine, prompt templates, cost estimates
+│   ├── models.js          # Database of 32 open LLMs with enterprise metadata
+│   ├── rules.js           # Scoring engine (7 dimensions), prompt templates, costs
+│   ├── quickstart.js      # Copy-paste run commands per ecosystem tool
+│   ├── licensing.js       # License guidance and risk assessment
+│   └── integration.js     # Framework-specific integration code snippets
 └── api/
     ├── index.js           # Parallel fetcher + fuzzy model matching
     ├── huggingface.js     # HuggingFace API client

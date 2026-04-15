@@ -155,6 +155,118 @@ function Deployment({ primary, costEstimate, latencyEstimate }) {
   );
 }
 
+// ── Quick Start ─────────────────────────────────────────────────────
+
+function QuickStart({ quickStart }) {
+  if (!quickStart || !quickStart.commands || Object.keys(quickStart.commands).length === 0) return null;
+
+  const TOOL_LABELS = {
+    ollama: 'Ollama',
+    'llama.cpp': 'llama.cpp',
+    vllm: 'vLLM (Docker)',
+    huggingface: 'HuggingFace TGI',
+    'lm-studio': 'LM Studio',
+  };
+
+  const recommended = quickStart.recommended;
+  const entries = Object.entries(quickStart.commands);
+
+  return (
+    <Section title="QUICK START" borderColor={C.accent}>
+      <Text dimColor>Get running in 60 seconds:</Text>
+      <Newline />
+      {entries.map(([tool, cmd]) => {
+        const isRec = tool === recommended;
+        return (
+          <Box key={tool} flexDirection="column" marginBottom={1}>
+            <Box gap={1}>
+              {isRec ? <Text color={C.accent} bold>{'\u2605'}</Text> : <Text dimColor> </Text>}
+              <Text color={isRec ? C.accent : 'white'} bold={isRec}>
+                {TOOL_LABELS[tool] || tool}
+                {isRec ? ' (recommended)' : ''}
+              </Text>
+            </Box>
+            <Box paddingLeft={3}>
+              <Text color={isRec ? C.accent : 'gray'}>{cmd}</Text>
+            </Box>
+          </Box>
+        );
+      })}
+    </Section>
+  );
+}
+
+// ── License Guidance ────────────────────────────────────────────────
+
+function LicenseGuidance({ guidance }) {
+  if (!guidance || !guidance.details) return null;
+
+  const riskColors = { low: C.success || C.accent, medium: C.warning, high: C.error };
+  const riskColor = riskColors[guidance.riskLevel] || 'white';
+  const riskIcons = { low: '\u2705', medium: '\u26A0\uFE0F', high: '\u274C' };
+  const riskIcon = riskIcons[guidance.riskLevel] || '';
+
+  const d = guidance.details;
+
+  return (
+    <Section title="LICENSE GUIDANCE" borderColor={riskColor}>
+      <Box gap={1} marginBottom={1}>
+        <Text>{riskIcon}</Text>
+        <Text bold color={riskColor}>{guidance.summary}</Text>
+      </Box>
+
+      <Box flexDirection="column">
+        <Row label="License" value={d.spdx} valueColor={riskColor} />
+        <Row label="Commercial use" value={d.commercialUse.allowed ? 'Yes' : 'No'} valueColor={d.commercialUse.allowed ? C.accent : C.error} />
+        <Row label="Fine-tuning" value={d.fineTuning.allowed ? 'Yes' : 'No'} valueColor={d.fineTuning.allowed ? C.accent : C.error} />
+        <Row label="Output ownership" value={d.outputOwnership.status === 'user' ? 'You own outputs' : d.outputOwnership.note} valueColor="white" />
+        <Row label="Training data" value={d.trainingData.note} valueColor={d.trainingData.status === 'open' ? C.accent : C.warning} />
+        <Row label="Attribution" value={d.attribution.required ? 'Required' : 'Not required'} valueColor="white" />
+      </Box>
+
+      {guidance.actionItems.length > 0 ? (
+        <Box flexDirection="column" marginTop={1}>
+          <Text dimColor underline>ACTION ITEMS</Text>
+          {guidance.actionItems.map((item, i) => (
+            <Box key={i} gap={1}>
+              <Text color={C.warning}>{'\u2022'}</Text>
+              <Text color={C.warning} wrap="wrap">{item}</Text>
+            </Box>
+          ))}
+        </Box>
+      ) : null}
+
+      <Box marginTop={1}>
+        <Text dimColor italic>{guidance.disclaimer}</Text>
+      </Box>
+    </Section>
+  );
+}
+
+// ── Integration Snippet ─────────────────────────────────────────────
+
+function IntegrationSnippet({ snippet }) {
+  if (!snippet) return null;
+
+  return (
+    <Section title={`INTEGRATION — ${snippet.framework.toUpperCase()} (${snippet.runtime})`} borderColor={C.blue || C.teal}>
+      <Text dimColor>{snippet.note}</Text>
+      <Newline />
+      <Box borderStyle="round" borderColor="gray" paddingX={1} paddingY={0}>
+        <Text color="white" wrap="wrap">{snippet.snippet}</Text>
+      </Box>
+      {snippet.dependencies && snippet.dependencies.length > 0 ? (
+        <Box flexDirection="column" marginTop={1}>
+          <Text dimColor underline>INSTALL</Text>
+          {snippet.dependencies.map((dep, i) => (
+            <Text key={i} color={C.accent}>{dep}</Text>
+          ))}
+        </Box>
+      ) : null}
+    </Section>
+  );
+}
+
 // ── Prompt Template ──────────────────────────────────────────────────
 
 function PromptTemplate({ template }) {
@@ -356,10 +468,19 @@ export default function Results({ recommendation, leaderboards }) {
       {/* 4. Deployment */}
       <Deployment primary={primary} costEstimate={costEstimate} latencyEstimate={latencyEstimate} />
 
-      {/* 5. Prompt Template */}
+      {/* 5. Quick Start */}
+      <QuickStart quickStart={primary?.quickStart} />
+
+      {/* 6. License Guidance */}
+      <LicenseGuidance guidance={primary?.licenseGuidance} />
+
+      {/* Integration Snippet */}
+      <IntegrationSnippet snippet={primary?.integrationSnippet} />
+
+      {/* 7. Prompt Template */}
       <PromptTemplate template={primary?.promptTemplate} />
 
-      {/* 6. Fallback Model */}
+      {/* 8. Fallback Model */}
       <FallbackModel fallback={fallback} />
 
       {/* 7. On-Device Option */}

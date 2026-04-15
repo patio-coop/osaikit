@@ -1,4 +1,7 @@
 import { MODELS, parseMemGB } from "./models.js";
+import { generateQuickStart } from "./quickstart.js";
+import { generateLicenseGuidance } from "./licensing.js";
+import { generateIntegrationSnippet } from "./integration.js";
 
 // ── Prompt Templates ─────────────────────────────────────────────────
 
@@ -110,6 +113,7 @@ const WEIGHTS = {
   computeFootprint: 1.5,
   ecosystemRichness: 1.0,
   fineTuningSupport: 0.5,
+  enterpriseReadiness: 0.75,
 };
 
 // ── Memory Parsing ───────────────────────────────────────────────────
@@ -360,6 +364,40 @@ function scoreFineTuning(model, inputs) {
   return { score, details, weight: WEIGHTS.fineTuningSupport };
 }
 
+function scoreEnterpriseReadiness(model, _inputs) {
+  const details = [];
+
+  if (!model.enterprise) {
+    return { score: 0, details: ["No enterprise data available"], weight: WEIGHTS.enterpriseReadiness };
+  }
+
+  const ent = model.enterprise;
+
+  const hostingScore = Math.min(ent.managedHosting.length / 5, 1.0);
+  const sdkScore = ent.sdkQuality / 5;
+  const communityScore = ent.communitySize / 5;
+  const slaScore = ent.slaAvailable ? 1.0 : 0.0;
+  const vpcScore = ent.vpcSupport ? 1.0 : 0.0;
+  const docsScore = ent.documentationQuality / 5;
+
+  const score =
+    hostingScore * 0.25 +
+    sdkScore * 0.2 +
+    communityScore * 0.2 +
+    slaScore * 0.15 +
+    vpcScore * 0.1 +
+    docsScore * 0.1;
+
+  details.push(`Managed hosting: ${ent.managedHosting.length} providers (${(hostingScore * 100).toFixed(0)}%)`);
+  details.push(`SDK quality: ${ent.sdkQuality}/5`);
+  details.push(`Community size: ${ent.communitySize}/5`);
+  details.push(`SLA available: ${ent.slaAvailable}`);
+  details.push(`VPC support: ${ent.vpcSupport}`);
+  details.push(`Documentation quality: ${ent.documentationQuality}/5`);
+
+  return { score, details, weight: WEIGHTS.enterpriseReadiness };
+}
+
 // ── Master Scoring ───────────────────────────────────────────────────
 
 function scoreModel(model, inputs) {
@@ -370,6 +408,7 @@ function scoreModel(model, inputs) {
     computeFootprint: scoreComputeFootprint(model, inputs),
     ecosystemRichness: scoreEcosystem(model, inputs),
     fineTuningSupport: scoreFineTuning(model, inputs),
+    enterpriseReadiness: scoreEnterpriseReadiness(model, inputs),
   };
 
   let totalWeightedScore = 0;
@@ -633,10 +672,17 @@ export function recommend(inputs) {
   const primary = {
     ...formatScored(primaryScored, primaryDeployment),
     promptTemplate,
+    quickStart: generateQuickStart(primaryScored.model, primaryDeployment),
+    licenseGuidance: generateLicenseGuidance(primaryScored.model),
+    integrationSnippet: (inputs.frameworks && inputs.frameworks.length > 0) ? generateIntegrationSnippet(primaryScored.model, inputs) : null,
   };
 
   const fallback = fallbackScored
-    ? formatScored(fallbackScored)
+    ? {
+        ...formatScored(fallbackScored),
+        quickStart: generateQuickStart(fallbackScored.model, selectDeployment(fallbackScored.model, inputs)),
+        licenseGuidance: generateLicenseGuidance(fallbackScored.model),
+      }
     : null;
 
   const onDevice = onDeviceScored

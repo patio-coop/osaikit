@@ -39,11 +39,70 @@ function PatioHeader({ compact = false }) {
   );
 }
 
+// ── Repo Analysis Summary ────────────────────────────────────────────
+
+function RepoSummary({ analysis }) {
+  if (!analysis) return null;
+
+  return (
+    <Box flexDirection="column" borderStyle="round" borderColor={THEME.colors.accent} paddingX={2} paddingY={1} marginBottom={1}>
+      <Box marginBottom={1}>
+        <Text bold color={THEME.colors.accent}>REPO ANALYSIS</Text>
+        <Text dimColor>  {analysis.path}</Text>
+      </Box>
+
+      <Box gap={2}>
+        <Text dimColor>Files:</Text>
+        <Text>{analysis.fileCount}</Text>
+        <Text dimColor>Lines:</Text>
+        <Text>{analysis.totalLines.toLocaleString()}</Text>
+        <Text dimColor>Context:</Text>
+        <Text>{analysis.contextNeeds}</Text>
+      </Box>
+
+      <Box marginTop={1} gap={1}>
+        <Text dimColor>Languages:</Text>
+        <Text color={THEME.colors.accent}>
+          {analysis.languages.map((l) => `${l.name} (${l.files})`).join(', ')}
+        </Text>
+      </Box>
+
+      {analysis.frameworks.length > 0 ? (
+        <Box gap={1}>
+          <Text dimColor>Frameworks:</Text>
+          <Text>{analysis.frameworks.join(', ')}</Text>
+        </Box>
+      ) : null}
+
+      <Box gap={2}>
+        <Box gap={1}>
+          <Text dimColor>Role:</Text>
+          <Text>{analysis.role}</Text>
+        </Box>
+        <Box gap={1}>
+          <Text dimColor>Runtime:</Text>
+          <Text>{analysis.runtime}</Text>
+        </Box>
+        <Box gap={1}>
+          <Text dimColor>Platform:</Text>
+          <Text>{analysis.platform}</Text>
+        </Box>
+      </Box>
+
+      <Box gap={1}>
+        <Text dimColor>Use cases:</Text>
+        <Text>{analysis.useCases.join(', ')}</Text>
+      </Box>
+    </Box>
+  );
+}
+
 // ── Main App ─────────────────────────────────────────────────────────
 
-export default function App() {
-  const [stage, setStage] = useState('welcome');
-  const [answers, setAnswers] = useState(null);
+export default function App({ repoData }) {
+  const hasRepo = repoData != null;
+  const [stage, setStage] = useState(hasRepo ? 'loading' : 'welcome');
+  const [answers, setAnswers] = useState(hasRepo ? repoData.inputs : null);
   const [recommendation, setRecommendation] = useState(null);
   const [leaderboards, setLeaderboards] = useState(null);
   const [sourceStatus, setSourceStatus] = useState({
@@ -179,6 +238,7 @@ export default function App() {
     return (
       <Box flexDirection="column" paddingX={1} paddingY={1}>
         <PatioHeader />
+        {hasRepo ? <RepoSummary analysis={repoData.analysis} /> : null}
         <Loading sourceStatus={sourceStatus} />
       </Box>
     );
@@ -189,6 +249,7 @@ export default function App() {
   if (stage === 'results') {
     return (
       <Box flexDirection="column">
+        {hasRepo ? <RepoSummary analysis={repoData.analysis} /> : null}
         <Results recommendation={recommendation} leaderboards={leaderboards} />
       </Box>
     );

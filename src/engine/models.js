@@ -27,6 +27,14 @@ export const MODELS = [
     releaseDate: "2024-06-17",
     provider: "DeepSeek",
     url: "https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai", "replicate"],
+      sdkQuality: 3,
+      communitySize: 4,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
   {
     id: "deepseek-coder-v2-236b",
@@ -51,6 +59,14 @@ export const MODELS = [
     releaseDate: "2024-06-17",
     provider: "DeepSeek",
     url: "https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai"],
+      sdkQuality: 3,
+      communitySize: 4,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
 
   // ── DeepSeek V3 ────────────────────────────────────────────────────
@@ -77,6 +93,14 @@ export const MODELS = [
     releaseDate: "2024-12-26",
     provider: "DeepSeek",
     url: "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai"],
+      sdkQuality: 3,
+      communitySize: 4,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
 
   // ── CodeLlama ──────────────────────────────────────────────────────
@@ -103,6 +127,14 @@ export const MODELS = [
     releaseDate: "2023-08-24",
     provider: "Meta",
     url: "https://huggingface.co/codellama/CodeLlama-7b-Instruct-hf",
+    enterprise: {
+      managedHosting: ["together.ai", "replicate", "fireworks.ai", "aws-bedrock"],
+      sdkQuality: 4,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
   {
     id: "codellama-13b",
@@ -127,6 +159,14 @@ export const MODELS = [
     releaseDate: "2023-08-24",
     provider: "Meta",
     url: "https://huggingface.co/codellama/CodeLlama-13b-Instruct-hf",
+    enterprise: {
+      managedHosting: ["together.ai", "replicate", "fireworks.ai", "aws-bedrock"],
+      sdkQuality: 4,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
   {
     id: "codellama-34b",
@@ -151,6 +191,14 @@ export const MODELS = [
     releaseDate: "2023-08-24",
     provider: "Meta",
     url: "https://huggingface.co/codellama/CodeLlama-34b-Instruct-hf",
+    enterprise: {
+      managedHosting: ["together.ai", "replicate", "fireworks.ai", "aws-bedrock"],
+      sdkQuality: 4,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
   {
     id: "codellama-70b",
@@ -175,6 +223,14 @@ export const MODELS = [
     releaseDate: "2024-01-29",
     provider: "Meta",
     url: "https://huggingface.co/codellama/CodeLlama-70b-Instruct-hf",
+    enterprise: {
+      managedHosting: ["together.ai", "replicate", "fireworks.ai", "aws-bedrock"],
+      sdkQuality: 4,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
 
   // ── StarCoder2 ─────────────────────────────────────────────────────
@@ -201,6 +257,14 @@ export const MODELS = [
     releaseDate: "2024-02-28",
     provider: "BigCode",
     url: "https://huggingface.co/bigcode/starcoder2-3b",
+    enterprise: {
+      managedHosting: ["huggingface-endpoints"],
+      sdkQuality: 3,
+      communitySize: 3,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
   {
     id: "starcoder2-7b",
@@ -225,6 +289,14 @@ export const MODELS = [
     releaseDate: "2024-02-28",
     provider: "BigCode",
     url: "https://huggingface.co/bigcode/starcoder2-7b",
+    enterprise: {
+      managedHosting: ["huggingface-endpoints"],
+      sdkQuality: 3,
+      communitySize: 3,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
   {
     id: "starcoder2-15b",
@@ -249,6 +321,14 @@ export const MODELS = [
     releaseDate: "2024-02-28",
     provider: "BigCode",
     url: "https://huggingface.co/bigcode/starcoder2-15b",
+    enterprise: {
+      managedHosting: ["huggingface-endpoints"],
+      sdkQuality: 3,
+      communitySize: 3,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
 
   // ── Llama 3.1 ──────────────────────────────────────────────────────
@@ -275,6 +355,14 @@ export const MODELS = [
     releaseDate: "2024-07-23",
     provider: "Meta",
     url: "https://huggingface.co/meta-llama/Meta-Llama-3.1-8B-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai", "replicate", "aws-bedrock", "azure-ml"],
+      sdkQuality: 5,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
   {
     id: "llama-3.1-70b",
@@ -299,6 +387,14 @@ export const MODELS = [
     releaseDate: "2024-07-23",
     provider: "Meta",
     url: "https://huggingface.co/meta-llama/Meta-Llama-3.1-70B-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai", "replicate", "aws-bedrock", "azure-ml"],
+      sdkQuality: 5,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
   {
     id: "llama-3.1-405b",
@@ -323,6 +419,14 @@ export const MODELS = [
     releaseDate: "2024-07-23",
     provider: "Meta",
     url: "https://huggingface.co/meta-llama/Meta-Llama-3.1-405B-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai", "replicate", "aws-bedrock", "azure-ml"],
+      sdkQuality: 5,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
 
   // ── Llama 3.2 (small/on-device) ───────────────────────────────────
@@ -349,6 +453,14 @@ export const MODELS = [
     releaseDate: "2024-09-25",
     provider: "Meta",
     url: "https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai", "replicate"],
+      sdkQuality: 5,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
   {
     id: "llama-3.2-3b",
@@ -373,6 +485,14 @@ export const MODELS = [
     releaseDate: "2024-09-25",
     provider: "Meta",
     url: "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai", "replicate"],
+      sdkQuality: 5,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
 
   // ── Mistral / Mixtral ──────────────────────────────────────────────
@@ -399,6 +519,14 @@ export const MODELS = [
     releaseDate: "2024-05-22",
     provider: "Mistral AI",
     url: "https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3",
+    enterprise: {
+      managedHosting: ["mistral-platform", "together.ai", "fireworks.ai", "aws-bedrock", "azure-ml"],
+      sdkQuality: 5,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
   {
     id: "mixtral-8x7b",
@@ -423,6 +551,14 @@ export const MODELS = [
     releaseDate: "2024-01-08",
     provider: "Mistral AI",
     url: "https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1",
+    enterprise: {
+      managedHosting: ["mistral-platform", "together.ai", "fireworks.ai", "aws-bedrock", "azure-ml"],
+      sdkQuality: 5,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
   {
     id: "mixtral-8x22b",
@@ -447,6 +583,14 @@ export const MODELS = [
     releaseDate: "2024-04-17",
     provider: "Mistral AI",
     url: "https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1",
+    enterprise: {
+      managedHosting: ["mistral-platform", "together.ai", "fireworks.ai", "aws-bedrock", "azure-ml"],
+      sdkQuality: 5,
+      communitySize: 5,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
 
   // ── CodeGemma ──────────────────────────────────────────────────────
@@ -473,6 +617,14 @@ export const MODELS = [
     releaseDate: "2024-04-09",
     provider: "Google",
     url: "https://huggingface.co/google/codegemma-2b",
+    enterprise: {
+      managedHosting: ["google-vertex-ai"],
+      sdkQuality: 4,
+      communitySize: 3,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
   {
     id: "codegemma-7b",
@@ -497,6 +649,14 @@ export const MODELS = [
     releaseDate: "2024-04-09",
     provider: "Google",
     url: "https://huggingface.co/google/codegemma-7b-it",
+    enterprise: {
+      managedHosting: ["google-vertex-ai"],
+      sdkQuality: 4,
+      communitySize: 3,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
 
   // ── Qwen2.5-Coder ─────────────────────────────────────────────────
@@ -523,6 +683,14 @@ export const MODELS = [
     releaseDate: "2024-11-11",
     provider: "Alibaba",
     url: "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai"],
+      sdkQuality: 3,
+      communitySize: 4,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
   {
     id: "qwen2.5-coder-7b",
@@ -547,6 +715,14 @@ export const MODELS = [
     releaseDate: "2024-11-11",
     provider: "Alibaba",
     url: "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai"],
+      sdkQuality: 3,
+      communitySize: 4,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
   {
     id: "qwen2.5-coder-14b",
@@ -571,6 +747,14 @@ export const MODELS = [
     releaseDate: "2024-11-11",
     provider: "Alibaba",
     url: "https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai"],
+      sdkQuality: 3,
+      communitySize: 4,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
   {
     id: "qwen2.5-coder-32b",
@@ -595,6 +779,14 @@ export const MODELS = [
     releaseDate: "2024-11-11",
     provider: "Alibaba",
     url: "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct",
+    enterprise: {
+      managedHosting: ["together.ai", "fireworks.ai"],
+      sdkQuality: 3,
+      communitySize: 4,
+      slaAvailable: false,
+      vpcSupport: true,
+      documentationQuality: 3,
+    },
   },
 
   // ── Phi-3 ──────────────────────────────────────────────────────────
@@ -621,6 +813,14 @@ export const MODELS = [
     releaseDate: "2024-04-23",
     provider: "Microsoft",
     url: "https://huggingface.co/microsoft/Phi-3-mini-128k-instruct",
+    enterprise: {
+      managedHosting: ["azure-ml", "azure-ai-studio"],
+      sdkQuality: 4,
+      communitySize: 4,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
   {
     id: "phi-3-medium",
@@ -645,6 +845,14 @@ export const MODELS = [
     releaseDate: "2024-05-21",
     provider: "Microsoft",
     url: "https://huggingface.co/microsoft/Phi-3-medium-128k-instruct",
+    enterprise: {
+      managedHosting: ["azure-ml", "azure-ai-studio"],
+      sdkQuality: 4,
+      communitySize: 4,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 5,
+    },
   },
 
   // ── WizardCoder ────────────────────────────────────────────────────
@@ -671,6 +879,14 @@ export const MODELS = [
     releaseDate: "2023-06-14",
     provider: "WizardLM",
     url: "https://huggingface.co/WizardLM/WizardCoder-15B-V1.0",
+    enterprise: {
+      managedHosting: [],
+      sdkQuality: 2,
+      communitySize: 2,
+      slaAvailable: false,
+      vpcSupport: false,
+      documentationQuality: 2,
+    },
   },
   {
     id: "wizardcoder-33b",
@@ -695,6 +911,14 @@ export const MODELS = [
     releaseDate: "2023-11-09",
     provider: "WizardLM",
     url: "https://huggingface.co/WizardLM/WizardCoder-33B-V1.1",
+    enterprise: {
+      managedHosting: [],
+      sdkQuality: 2,
+      communitySize: 2,
+      slaAvailable: false,
+      vpcSupport: false,
+      documentationQuality: 2,
+    },
   },
 
   // ── Granite Code ───────────────────────────────────────────────────
@@ -721,6 +945,14 @@ export const MODELS = [
     releaseDate: "2024-05-06",
     provider: "IBM",
     url: "https://huggingface.co/ibm-granite/granite-3b-code-instruct",
+    enterprise: {
+      managedHosting: ["ibm-watsonx"],
+      sdkQuality: 4,
+      communitySize: 3,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
   {
     id: "granite-code-8b",
@@ -745,6 +977,14 @@ export const MODELS = [
     releaseDate: "2024-05-06",
     provider: "IBM",
     url: "https://huggingface.co/ibm-granite/granite-8b-code-instruct",
+    enterprise: {
+      managedHosting: ["ibm-watsonx"],
+      sdkQuality: 4,
+      communitySize: 3,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
   {
     id: "granite-code-20b",
@@ -769,6 +1009,14 @@ export const MODELS = [
     releaseDate: "2024-05-06",
     provider: "IBM",
     url: "https://huggingface.co/ibm-granite/granite-20b-code-instruct",
+    enterprise: {
+      managedHosting: ["ibm-watsonx"],
+      sdkQuality: 4,
+      communitySize: 3,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
   {
     id: "granite-code-34b",
@@ -793,6 +1041,14 @@ export const MODELS = [
     releaseDate: "2024-05-06",
     provider: "IBM",
     url: "https://huggingface.co/ibm-granite/granite-34b-code-instruct",
+    enterprise: {
+      managedHosting: ["ibm-watsonx"],
+      sdkQuality: 4,
+      communitySize: 3,
+      slaAvailable: true,
+      vpcSupport: true,
+      documentationQuality: 4,
+    },
   },
 ];
 
