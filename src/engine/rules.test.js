@@ -1,6 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { recommend, PROMPT_TEMPLATES, WEIGHTS } from './rules.js';
+import { MODELS } from './models.js';
 
 // Helper to build inputs with sensible defaults
 function makeInputs(overrides = {}) {
@@ -189,5 +190,89 @@ describe('WEIGHTS', () => {
   it('exports scoring weights', () => {
     assert.ok(WEIGHTS, 'Missing WEIGHTS export');
     assert.ok(typeof WEIGHTS === 'object');
+  });
+});
+
+describe('legacy filtering', () => {
+  it('excludes legacy models by default', () => {
+    const result = recommend(makeInputs());
+    // Primary should not be a legacy model
+    if (result.primary) {
+      const primaryModel = MODELS.find(m => m.id === result.primary.model.id);
+      assert.ok(!primaryModel?.legacy, `Primary model "${result.primary.model.name}" should not be legacy`);
+    }
+  });
+
+  it('includes legacy models when includeLegacy is set', () => {
+    const result = recommend(makeInputs({ includeLegacy: true }));
+    // Should have more candidates considered
+    assert.ok(result._meta.candidatesAfterFilter > 0);
+    assert.ok(result._meta.totalModels > result._meta.candidatesAfterFilter);
+  });
+
+  it('legacy models appear in filtered list with reason', () => {
+    const result = recommend(makeInputs());
+    const legacyFiltered = result._meta.filteredModels.filter(
+      f => f.reasons.some(r => r.includes('Legacy'))
+    );
+    assert.ok(legacyFiltered.length > 0, 'Should have legacy models in filtered list');
+  });
+
+  it('non-legacy models are never filtered as legacy', () => {
+    const result = recommend(makeInputs());
+    const legacyFiltered = result._meta.filteredModels.filter(
+      f => f.reasons.some(r => r.includes('Legacy'))
+    );
+    // Check none of these are non-legacy models
+    for (const f of legacyFiltered) {
+      const model = MODELS.find(m => m.name === f.model);
+      if (model) {
+        assert.ok(model.legacy, `"${f.model}" was filtered as legacy but isn't marked legacy`);
+      }
+    }
+  });
+});
+
+describe('leaderboard-influenced scoring', () => {
+  it('recommend accepts optional leaderboards parameter', () => {
+    const result = recommend(makeInputs(), null);
+    assert.ok(result.primary, 'Should work with null leaderboards');
+  });
+
+  it('recommend works with leaderboard data', () => {
+    const mockLeaderboards = {
+      swebench: [
+        { model: 'Qwen3 32B', resolvedRate: 45.0, totalInstances: 500, agent: 'SWE-agent' },
+      ],
+      aider: [
+        { model: 'qwen3-32b', passRate: 55.0, editFormat: 'diff' },
+      ],
+      huggingface: null,
+      livecodebench: null,
+      bigcodebench: null,
+    };
+    const result = recommend(makeInputs({ includeLegacy: false }), mockLeaderboards);
+    assert.ok(result.primary, 'Should still return a recommendation with leaderboards');
+  });
+
+  it('recommendation may differ with vs without leaderboards', () => {
+    const mockLeaderboards = {
+      swebench: [
+        { model: 'Devstral Small 2', resolvedRate: 68.0, totalInstances: 500, agent: 'SWE-agent' },
+      ],
+      aider: [
+        { model: 'devstral-small-2', passRate: 48.2, editFormat: 'diff' },
+      ],
+      huggingface: null,
+      livecodebench: null,
+      bigcodebench: null,
+    };
+    const withoutLB = recommend(makeInputs());
+    const withLB = recommend(makeInputs(), mockLeaderboards);
+    // Both should produce valid results
+    assert.ok(withoutLB.primary);
+    assert.ok(withLB.primary);
+    // Scores may or may not differ, but both should be valid
+    assert.ok(typeof withLB.primary.scoreBreakdown.finalScore === 'number');
   });
 });

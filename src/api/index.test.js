@@ -84,4 +84,14 @@ describe('fetchAllLeaderboards()', () => {
     const result = await fetchAllLeaderboards();
     assert.ok(result.aider === null || Array.isArray(result.aider));
   });
+
+  it('livecodebench returns data (has fallback)', async () => {
+    const result = await fetchAllLeaderboards();
+    assert.ok(result.livecodebench === null || Array.isArray(result.livecodebench));
+  });
+
+  it('bigcodebench returns data (has fallback)', async () => {
+    const result = await fetchAllLeaderboards();
+    assert.ok(result.bigcodebench === null || Array.isArray(result.bigcodebench));
+  });
 });
