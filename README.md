@@ -1,6 +1,6 @@
 # OSAI - Open Source AI Kit
 
-Interactive CLI that recommends the best open-source LLM for your stack, hardware, and use case. Point it at a repo and get model recommendations with copy-paste setup commands — no API keys required.
+Find, recommend, and deploy the best open-source LLM for your stack. One command to go from repo analysis to a running local model — no API keys required.
 
 ```
   ___  ____    _    ___
@@ -13,14 +13,36 @@ Interactive CLI that recommends the best open-source LLM for your stack, hardwar
 ## Quick start
 
 ```bash
-# Analyze a repo and get instant recommendations
+# Recommend + install + serve the best model for your project
+npx osaikit run local --repo .
+
+# Just get recommendations (no install)
 npx osaikit --repo .
 
-# Or run the interactive wizard
+# Interactive wizard
 npx osaikit
 ```
 
-## What it does
+## `run local` — one command to a running model
+
+Analyzes your repo, picks the best open-source LLM, installs it via [Ollama](https://ollama.com), and verifies the API is serving.
+
+```bash
+osaikit run local --repo .              # auto-detect → deploy
+osaikit run local --model qwen2.5-coder-7b   # specific model
+osaikit run local                       # general-purpose defaults
+```
+
+What it does:
+1. Scans your codebase (languages, frameworks, project size)
+2. Scores 32 models and picks the best fit
+3. Ensures Ollama is installed and running
+4. Pulls the model
+5. Verifies the API at `http://localhost:11434/v1`
+
+Requires [Ollama](https://ollama.com/download) installed locally.
+
+## Recommend mode
 
 Scores 32 open-source models across seven weighted dimensions to find the best fit for your project. Two modes:
 
@@ -102,7 +124,8 @@ Live leaderboard data from HuggingFace, SWE-bench, and Aider is fetched in paral
 
 ```
 src/
-├── cli.js                 # Entry point, flag parsing (--repo, --help, --version)
+├── cli.js                 # Entry point, flag parsing, command dispatch
+├── run.js                 # `run local` — ollama install + serve flow
 ├── app.js                 # State machine (welcome → wizard → loading → results)
 ├── theme.js               # OSAI design system tokens
 ├── analyzer/
