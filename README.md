@@ -186,13 +186,16 @@ The shift from "recommend" to "provision." Each row below has an open-source com
 | Layer | Enterprise readiness gap | Component to wire | Work |
 |---|---|---|---|
 | Observability | 2/5 | [Langfuse](https://langfuse.com) or [OpenLIT](https://openlit.io) | Auto-provision monitoring, token tracking, cost attribution |
-| Content filtering | 2/5 | [Llama Guard](https://github.com/meta-llama/PurpleLlama), [NeMo Guardrails](https://github.com/NVIDIA/NeMo-Guardrails) | Auto-provision input/output safety rails |
+| Content filtering | 2/5 | [Llama Guard](https://github.com/meta-llama/PurpleLlama), [NeMo Guardrails](https://github.com/NVIDIA/NeMo-Guardrails), [any-guardrail](https://github.com/mozilla-ai/any-guardrail) | Auto-provision input/output safety rails; any-guardrail provides a unified interface across guardrail providers (Llama Guard, ShieldGemma, Alinia) |
 | Code security | 2/5 | [Semgrep](https://semgrep.dev), [CodeShield](https://github.com/meta-llama/PurpleLlama) | Auto-scan generated code for vulnerabilities |
 | Audit trail | 2/5 | Langfuse + structured logging | Auto-provision SOC2/GDPR-ready audit logging |
 | UI/API | 2/5 | [Open WebUI](https://github.com/open-webui/open-webui), [LibreChat](https://github.com/danny-avila/LibreChat) | `osaikit ui` — provision a chat interface |
 | Production deployment | 3/5 | [vLLM](https://github.com/vllm-project/vllm), Docker, OpenAI-compatible proxy | `osaikit run production` — deploy with monitoring + safety |
-| Evaluation | 2/5 | [LM Eval Harness](https://github.com/EleutherAI/lm-evaluation-harness), [Inspect AI](https://github.com/UKGovernmentBEIS/inspect_ai) | `osaikit eval` — benchmark models on your own data |
-| Agent scaffolding | 2/5 | [LangChain](https://github.com/langchain-ai/langchain), [LlamaIndex](https://github.com/run-llama/llama_index) | `osaikit agent` — scaffold agent projects on open models |
+| Evaluation | 2/5 | [LM Eval Harness](https://github.com/EleutherAI/lm-evaluation-harness), [Inspect AI](https://github.com/UKGovernmentBEIS/inspect_ai), [Lumigator](https://github.com/mozilla-ai/lumigator) | `osaikit eval` — benchmark models on your own data; Lumigator adds metric-based model comparison (BERTScore, ROUGE, METEOR) with UI |
+| Provider abstraction | 2/5 | [any-llm](https://github.com/mozilla-ai/any-llm) | Unified LLM provider interface — switch between Ollama, OpenAI, Anthropic, Mistral without code changes; simplifies `osaikit run production` multi-backend support |
+| Agent scaffolding | 2/5 | [LangChain](https://github.com/langchain-ai/langchain), [LlamaIndex](https://github.com/run-llama/llama_index), [any-agent](https://github.com/mozilla-ai/any-agent) | `osaikit agent` — scaffold agent projects on open models; any-agent provides a single interface across Agno, ADK, LangChain, LlamaIndex, OpenAI, smolagents with built-in evaluation |
+| MCP tooling | 2/5 | [mcpd](https://github.com/mozilla-ai/mcpd) | Declarative MCP server management — lifecycle, secret injection, dev-to-prod config; powers `osaikit agent` tool-calling setup |
+| Shared agent learning | — | [cq](https://github.com/mozilla-ai/cq) | Collective knowledge for agents — persist and share solutions across sessions so agents stop rediscovering failures; future `osaikit agent` enhancement |
 | Quantization | 2/5 | GGUF, AWQ, GPTQ via Ollama/llama.cpp | Auto-select quantization for available hardware |
 | Federated inference | — | Mesh routing to community GPU nodes | Future: `osaikit run federated` as a backend option |
 
