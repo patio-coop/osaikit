@@ -10,7 +10,6 @@
  */
 
 import { execSync, spawn } from 'node:child_process';
-import { resolve } from 'node:path';
 
 const RESET = '\x1b[0m';
 const GREEN = '\x1b[32m';
@@ -99,7 +98,7 @@ async function verifyApi(tag) {
 // ── Main ────────────────────────────────────────────────────────────
 
 export async function runLocal(args) {
-  const { analyzeRepo } = await import('./analyzer/repo.js');
+  const { analyzeRepoOrFetch } = await import('./analyzer/repo.js');
   const { recommend } = await import('./engine/rules.js');
   const { ECOSYSTEM_IDS } = await import('./engine/quickstart.js');
 
@@ -131,11 +130,11 @@ export async function runLocal(args) {
 
     let inputs;
     if (repoPath) {
-      const { inputs: repoInputs, analysis } = analyzeRepo(resolve(repoPath));
+      const { inputs: repoInputs, analysis } = analyzeRepoOrFetch(repoPath);
       inputs = repoInputs;
       // Force local deployment constraints
       inputs.constraints = { ...inputs.constraints, deployment: 'local' };
-      log(`${dim('Path:')} ${resolve(repoPath)}`);
+      log(`${dim('Path:')} ${analysis.path}`);
       log(`${dim('Languages:')} ${analysis.languages.map(l => l.name).join(', ')}`);
       log(`${dim('Frameworks:')} ${analysis.frameworks.join(', ') || 'none detected'}`);
       log(`${dim('Role:')} ${analysis.role}  ${dim('Platform:')} ${analysis.platform}`);

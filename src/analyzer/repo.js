@@ -4,8 +4,10 @@
  * Returns an inputs object compatible with the recommendation engine.
  */
 
-import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync, existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import { execSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
 
 // ── File extension → language mapping ───────────────────────────────
 
@@ -410,7 +412,49 @@ function walkDir(dir, maxDepth = 8, depth = 0) {
   return results;
 }
 
-// ── Main analyzer ───────────────────────────────────────────────────
+// ── Remote URL detection ────────────────────────────────────────────
+
+const URL_PATTERN = /^(https?:\/\/|git@|ssh:\/\/)/;
+
+function isRemoteUrl(value) {
+  return URL_PATTERN.test(value);
+}
+
+// ── Remote repo cloning ─────────────────────────────────────────────
+
+function cloneRepo(url, dest) {
+  execSync(`git clone --depth 1 ${url} "${dest}"`, {
+    stdio: 'pipe',
+    timeout: 120_000, // 2 min max for clone
+  });
+}
+
+// ── Analyze a local path OR fetch + analyze a remote URL ───────────
+//
+// If `repoPath` looks like a URL (https://, git@, ssh://), clones it
+// to a temporary directory, runs the analyzer, then cleans up.
+// Otherwise delegates to the local-only analyzeRepo().
+
+export function analyzeRepoOrFetch(repoPath) {
+  if (isRemoteUrl(repoPath)) {
+    const tmpDir = mkdtempSync(join(tmpdir(), 'osaikit-repo-'));
+    console.error(`\n  Cloning ${repoPath} ...`);
+    try {
+      cloneRepo(repoPath, tmpDir);
+      console.error(`  \x1b[32m✓\x1b[0m Cloned to ${tmpDir}`);
+      const result = analyzeRepo(tmpDir);
+      // Override the analysis path to show the original URL
+      result.analysis.path = repoPath;
+      return result;
+    } finally {
+      // Cleanup temp directory
+      try { rmSync(tmpDir, { recursive: true, force: true }); } catch { /* ignore */ }
+    }
+  }
+  return analyzeRepo(repoPath);
+}
+
+// ── Main analyzer (local only) ──────────────────────────────────────
 
 export function analyzeRepo(repoPath) {
   if (!existsSync(repoPath)) {
