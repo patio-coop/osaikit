@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync, chmodSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { analyzeRepo } from './repo.js';
+import { analyzeRepo, analyzeRepoOrFetch } from './repo.js';
 
 // ── Helpers ─────────────────────────────────────────────────────────
 
@@ -590,5 +590,41 @@ describe('analyzeRepo() – return shape', () => {
       assert.equal(typeof lang.files, 'number');
       assert.ok(lang.files > 0);
     }
+  });
+});
+
+// ── analyzeRepoOrFetch ──────────────────────────────────────────────
+
+describe('analyzeRepoOrFetch() – local paths', () => {
+  afterEach(cleanTmpDir);
+
+  it('delegates to analyzeRepo for a local path', () => {
+    makeTmpDir();
+    writeFixture('main.py', 'print("hello")\n');
+    writeFixture('pyproject.toml', '[project]\ndependencies = ["fastapi"]\n');
+    const result = analyzeRepoOrFetch(tmpDir);
+    assert.ok(result.inputs, 'Should return inputs');
+    assert.ok(result.analysis, 'Should return analysis');
+    assert.equal(result.analysis.path, tmpDir);
+    assert.ok(result.analysis.fileCount > 0);
+    assert.ok(result.analysis.totalLines > 0);
+    const names = result.analysis.languages.map((l) => l.name);
+    assert.ok(names.includes('Python'), `Expected Python in ${names}`);
+  });
+
+  it('throws for a non-existent local path', () => {
+    assert.throws(
+      () => analyzeRepoOrFetch('/tmp/__this_path_should_not_exist_12345__'),
+      /does not exist/,
+    );
+  });
+
+  it('returns the same shape as analyzeRepo for local dirs', () => {
+    makeTmpDir();
+    writeJsFiles(3, 5);
+    const direct = analyzeRepo(tmpDir);
+    const fetched = analyzeRepoOrFetch(tmpDir);
+    assert.deepEqual(fetched.inputs, direct.inputs);
+    assert.deepEqual(fetched.analysis, direct.analysis);
   });
 });

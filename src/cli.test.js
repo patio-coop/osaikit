@@ -254,4 +254,9 @@ describe('flag parsing', () => {
     assert.equal(exitCode, 1);
     assert.ok(stderr.includes('Error analyzing repo'), 'Should report analysis error');
   });
+
+  it('--repo with valid local path succeeds', () => {
+    const { exitCode } = run('--repo .');
+    assert.equal(exitCode, 0, 'Should exit 0 when analyzing local repo');
+  });
 });

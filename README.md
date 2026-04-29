@@ -16,8 +16,8 @@ Find, recommend, and deploy the best open-source LLM for your stack. One command
 # Recommend + install + serve the best model for your project
 npx osaikit run local --repo .
 
-# Just get recommendations (no install)
-npx osaikit --repo .
+# Analyze a remote GitHub repo (no install)
+npx osaikit --repo https://github.com/user/repo
 
 # Refresh leaderboard data from 5 live sources
 npx osaikit refresh
@@ -52,11 +52,12 @@ Scores 52 open-source models across seven weighted dimensions to find the best f
 
 ### `--repo <path>` — Auto-detect mode
 
-Point at any local repo. The analyzer scans your codebase and auto-detects languages, frameworks, runtime, platform, and project size — then skips straight to recommendations.
+Point at any local repo or remote GitHub URL. The analyzer scans your codebase and auto-detects languages, frameworks, runtime, platform, and project size — then skips straight to recommendations.
 
 ```bash
 osaikit --repo .
 osaikit --repo ~/projects/my-api
+osaikit --repo https://github.com/user/repo   # clones + analyzes remotely
 ```
 
 ### Interactive wizard
@@ -217,6 +218,27 @@ osaikit init --profile agent          # Agent framework + tool-calling config
 This roadmap is informed by the [OSAI gap map](https://substack.com/home/post/p-193802654) — a scoring of 42 subcategories of the open-source AI stack against closed-source equivalents. The models aren't the problem. Enterprise readiness averages 2.3 out of 5. Terms of Service scored 1. The packaging gap is a "years" problem, and almost all the energy in the ecosystem is going to the part (models) that's already closest to parity.
 
 osaikit focuses on the other part.
+
+## Development
+
+```bash
+# Build + run with local changes
+npm run dev
+
+# Build + run with --repo flag (local path or remote URL)
+npm run dev:repo -- <path-or-url>
+
+# Examples:
+npm run dev:repo -- .                                    # analyze current dir
+npm run dev:repo -- https://github.com/user/repo         # clone + analyze remote
+```
+
+Run tests:
+```bash
+npm test
+```
+
+See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the full project structure and contributor guide.
 
 ## Tech stack
 

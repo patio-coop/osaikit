@@ -42,7 +42,7 @@ function printHelp() {
   Options
     --help, -h       Show this help message
     --version, -v    Show version number
-    --repo <path>    Analyze a repository
+    --repo <path>    Analyze a repository (local path or https:// GitHub URL)
     --model <id>     Use a specific model (with run local)
 
   Commands
@@ -146,9 +146,9 @@ const repoPath = parseFlag(args, '--repo', '.');
 let repoData = null;
 
 if (repoPath) {
-  const { analyzeRepo } = await import('./analyzer/repo.js');
+  const { analyzeRepoOrFetch } = await import('./analyzer/repo.js');
   try {
-    repoData = analyzeRepo(resolve(repoPath));
+    repoData = analyzeRepoOrFetch(repoPath);
   } catch (err) {
     console.error(`Error analyzing repo: ${err.message}`);
     process.exit(1);

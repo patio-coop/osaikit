@@ -11,6 +11,7 @@
     "build": "node build.js",
     "start": "node dist/cli.js",
     "dev": "node build.js && node dist/cli.js",
+    "dev:repo": "node build.js && node dist/cli.js --repo",
     "test": "node --test src/**/*.test.js",
     "prepublishOnly": "node build.js",
     "prepare": "node build.js"
